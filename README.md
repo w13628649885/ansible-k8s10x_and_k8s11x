@@ -1,5 +1,5 @@
 
-作者：xiaotian45123
+
 ##### 1: 前置系统说明
 
 
@@ -11,20 +11,26 @@
 2：系统只配置了IP，并且能联网，其他无任何配置
 3：ansible服务器已经和所有节点做了root用户免密码登陆
 4: 所有执行均采用root用户
-5：github下载地址：https://github.com/xiaotian45123/ansible-k8s10x_and_k8s11x
+5：github下载地址：git@github.com:wufenglinux/ansible-k8s10x_and_k8s11x.git
 6：安装测试通过的K8S版本有：1.10.3、1.10.4、1.10.5、1.11.0、1.11.1，其他版本请大家自行测试
 7：在阿里云不能使用阿里云得SLB服务代替keepalived+haproxy，因为阿里云的SLB不支持后端真实服务器既做服务端又做客户端，我研究过阿里云K8S部署脚本，阿里云SLB只做node节点kebelet访问master的负载功能
 8：本ansible一键安装可用于生产环境
 9：同时欢迎大家改进并提交到github,这个我后期一直会维护，由于不太会用github，所以大家有问题也可以先留言
 
 主机名称     	IP	                备注
-node01	192.168.150.181	        master  and etcd
-node02	192.168.150.182	        master  and etcd
-node03	192.168.150.183	        master  and etcd
-node04	192.168.150.184	        node
-slb-179	192.168.150.179       	haproxy+keepalived
-slb-180	192.168.150.180	        haproxy+keepalived
-	    192.168.150.186	            VIP
+node01  10.253.1.101	        master1  and etcd1  haproxy+keepalived
+node02	10.253.1.102	        master2  and etcd2  haproxy+keepalived
+node03	10.253.1.103	        master3  and etcd3  haproxy+keepalived
+node04	10.253.1.111	        node1
+node05	10.253.1.112	        node2
+node06	10.253.1.113	        node3
+node07	10.253.1.114	        node4
+node08	10.253.1.115	        node5
+node09	10.253.1.116	        node6
+node10	10.253.1.117	        node7
+node11	10.253.1.118	        node8
+
+10.253.1.100            VIP
 
 
 
@@ -34,16 +40,24 @@ slb-180	192.168.150.180	        haproxy+keepalived
 
 ```
 [slb]
-192.168.150.179 name=slb-179 type=MASTER priority=100
-192.168.150.180 name=slb-180 type=BACKUP priority=90
+10.253.1.101 name=node01 type=MASTER priority=100
+10.253.1.102 name=node02 type=BACKUP priority=90
+10.253.1.103 name=node03 type=BACKUP priority=80
 
 [k8s-master]
-192.168.150.181 name=node01 order=1
-192.168.150.182 name=node02 order=2
-192.168.150.183 name=node03 order=3
+10.253.1.101 name=node01 order=1
+10.253.1.102 name=node02 order=2
+10.253.1.103 name=node03 order=3
 
 [k8s-node]
-192.168.150.184 name=node04
+10.253.1.111 name=node04
+10.253.1.112 name=node05
+10.253.1.113 name=node06
+10.253.1.114 name=node07
+10.253.1.115 name=node08
+10.253.1.116 name=node09
+10.253.1.117 name=node10
+10.253.1.118 name=node11
 
 [k8s-all:children]
 k8s-master
@@ -51,8 +65,8 @@ k8s-node
 
 [all:vars] 
 local_images=registry.cn-hangzhou.aliyuncs.com/k8sth
-k8s_version=1.11.0
-vip=192.168.150.186
+k8s_version=1.11.1
+vip=10.253.1.100
 
 #type表示keepalived的类型是master或者backp
 #priority代表权重，可以自行修改，但是不建议修改，直接修改IP为合适的就行
