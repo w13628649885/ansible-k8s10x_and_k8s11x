@@ -11,19 +11,24 @@
 # Ex 1: Ungrouped hosts, specify before any group headers.
 
 [slb]
-10.253.1.111 name=slb-179 type=MASTER priority=100
-10.253.1.112 name=slb-180 type=BACKUP priority=90
-10.253.1.113 name=slb-180 type=BACKUP priority=80
+10.253.1.101 name=node01 type=MASTER priority=100
+10.253.1.102 name=node02 type=BACKUP priority=90
+10.253.1.103 name=node03 type=BACKUP priority=80
 
 [k8s-master]
-10.253.1.111 name=node01  order=1
-10.253.1.112 name=node02  order=2
-10.253.1.113 name=node03  order=3
+10.253.1.101 name=node01  order=1
+10.253.1.102 name=node02  order=2
+10.253.1.103 name=node03  order=3
 
 [k8s-node]
-10.253.1.114 name=node04
-10.253.1.115 name=node05
-10.253.1.116 name=node06
+10.253.1.111 name=node04
+10.253.1.112 name=node05
+10.253.1.113 name=node06
+10.253.1.114 name=node07
+10.253.1.115 name=node08
+10.253.1.116 name=node09
+10.253.1.117 name=node10
+10.253.1.118 name=node11
 
 [k8s-all:children]
 k8s-master
@@ -32,7 +37,8 @@ k8s-node
 [all:vars]
 local_images=registry.cn-hangzhou.aliyuncs.com/k8sth
 k8s_version=1.11.1
-vip=10.253.1.150
+vip=10.253.1.100
+
 
 
 ## green.example.com
