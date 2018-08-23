@@ -2,7 +2,11 @@
 作者：xiaotian45123
 ##### 1: 前置系统说明
 
+
 ```
+
+提前关闭所有节点的selinux 
+
 1：主机系统：CentOS Linux release 7.5.1804 (Core)
 2：系统只配置了IP，并且能联网，其他无任何配置
 3：ansible服务器已经和所有节点做了root用户免密码登陆
