@@ -13,9 +13,7 @@
 4: 所有执行均采用root用户
 5：github下载地址：git@github.com:wufenglinux/ansible-k8s10x_and_k8s11x.git
 6：安装测试通过的K8S版本有：1.10.3、1.10.4、1.10.5、1.11.0、1.11.1，其他版本请大家自行测试
-7：在阿里云不能使用阿里云得SLB服务代替keepalived+haproxy，因为阿里云的SLB不支持后端真实服务器既做服务端又做客户端，我研究过阿里云K8S部署脚本，阿里云SLB只做node节点kebelet访问master的负载功能
-8：本ansible一键安装可用于生产环境
-9：同时欢迎大家改进并提交到github,这个我后期一直会维护，由于不太会用github，所以大家有问题也可以先留言
+7：本ansible一键安装可用于生产环境
 
 主机名称     	IP	                备注
 node01  10.253.1.101	        master1  and etcd1  haproxy+keepalived
@@ -130,14 +128,7 @@ ansible-playbook /etc/ansible/roles/first.yaml
 #4: slb主机组安装配置haproxy、keepalived
 #5: master节点安装etcd集群，未采用https的集群
 
-#执行结果如下：
-PLAY RECAP *****************************************************************************************************************************
-192.168.150.179            : ok=19   changed=18   unreachable=0    failed=0   
-192.168.150.180            : ok=19   changed=18   unreachable=0    failed=0   
-192.168.150.181            : ok=16   changed=15   unreachable=0    failed=0   
-192.168.150.182            : ok=16   changed=15   unreachable=0    failed=0   
-192.168.150.183            : ok=16   changed=15   unreachable=0    failed=0   
-192.168.150.184            : ok=12   changed=11   unreachable=0    failed=0 
+
 ```
 #### 4.3： two.yaml
 
@@ -153,36 +144,11 @@ ansible-playbook /etc/ansible/roles/two.yaml
 #4：添加flannel网络，需要使用其他网络的在two.yaml里面将flannel这个role注释掉，在集群安装完成后自行添加
 #5：将node节点添加进集群
 
-执行结果如下：
-PLAY RECAP *****************************************************************************************************************************
-192.168.150.181            : ok=23   changed=21   unreachable=0    failed=0   
-192.168.150.182            : ok=18   changed=17   unreachable=0    failed=0   
-192.168.150.183            : ok=18   changed=17   unreachable=0    failed=0   
-192.168.150.184            : ok=13   changed=12   unreachable=0    failed=0 
 
-在主机node01上面的结果如下：（由于网络下载速度的原因，可能得等个2分钟才能看到如下结果）
+
+在主机node01上面的结果：（由于网络下载速度的原因，可能得等个2分钟才能看到结果）
 
 [root@node01 ~]# kubectl get pod --all-namespaces -o wide
-NAMESPACE     NAME                             READY     STATUS    RESTARTS   AGE       IP                NODE
-kube-system   coredns-86d9549d45-7fpsr         1/1       Running   0          9m        10.244.3.3        node04
-kube-system   coredns-86d9549d45-l7w8x         1/1       Running   0          9m        10.244.3.2        node04
-kube-system   kube-apiserver-node01            1/1       Running   0          8m        192.168.150.181   node01
-kube-system   kube-apiserver-node02            1/1       Running   0          9m        192.168.150.182   node02
-kube-system   kube-apiserver-node03            1/1       Running   0          9m        192.168.150.183   node03
-kube-system   kube-controller-manager-node01   1/1       Running   0          9m        192.168.150.181   node01
-kube-system   kube-controller-manager-node02   1/1       Running   0          9m        192.168.150.182   node02
-kube-system   kube-controller-manager-node03   1/1       Running   0          9m        192.168.150.183   node03
-kube-system   kube-flannel-ds-amd64-ht2dk      1/1       Running   0          9m        192.168.150.181   node01
-kube-system   kube-flannel-ds-amd64-pjxvm      1/1       Running   0          9m        192.168.150.183   node03
-kube-system   kube-flannel-ds-amd64-qsmql      1/1       Running   0          9m        192.168.150.184   node04
-kube-system   kube-flannel-ds-amd64-wjv4g      1/1       Running   0          9m        192.168.150.182   node02
-kube-system   kube-proxy-2z5rq                 1/1       Running   0          9m        192.168.150.181   node01
-kube-system   kube-proxy-98scf                 1/1       Running   0          9m        192.168.150.183   node03
-kube-system   kube-proxy-jx58c                 1/1       Running   0          9m        192.168.150.184   node04
-kube-system   kube-proxy-vgzbj                 1/1       Running   0          9m        192.168.150.182   node02
-kube-system   kube-scheduler-node01            1/1       Running   0          8m        192.168.150.181   node01
-kube-system   kube-scheduler-node02            1/1       Running   0          9m        192.168.150.182   node02
-kube-system   kube-scheduler-node03            1/1       Running   0          9m        192.168.150.183   node03
 
 
 ```
